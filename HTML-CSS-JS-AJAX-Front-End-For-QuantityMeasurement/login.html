@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quantity Measurement — Login</title>
+  <link rel="stylesheet" href="login.css"/>
+</head>
+<body>
+
+  <!-- ── App Brand ── -->
+  <div class="app-header">
+    <div class="app-icon">📐</div>
+    <span class="app-name">Quantity Measurement</span>
+  </div>
+
+  <!-- ── Auth Card ── -->
+  <div class="card">
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-login"  onclick="switchTab('login')">LOGIN</button>
+      <button class="tab-btn"        id="tab-signup" onclick="switchTab('signup')">SIGNUP</button>
+    </div>
+
+    <div class="form-area">
+
+      <!-- ════ LOGIN PANEL ════ -->
+      <div class="panel active" id="panel-login">
+
+        <div class="msg-box" id="loginMsg"></div>
+
+        <div class="field">
+          <label for="loginEmail">Email Id</label>
+          <input type="email" id="loginEmail" placeholder="Enter your email" autocomplete="email"/>
+        </div>
+
+        <div class="field">
+          <label for="loginPassword">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="loginPassword" class="has-eye"
+                   placeholder="Enter your password" autocomplete="current-password"/>
+            <button type="button" class="eye-btn"
+                    onclick="toggleEye('loginPassword', this)"
+                    aria-label="Show/hide password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C6.48 20 2 12 2 12
+                         a17.6 17.6 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4
+                         c5.52 0 10 8 10 8a17.8 17.8 0 0 1-2.36 3.38M1 1l22 22"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="forgot-wrap">
+          <a href="#" class="forgot-link" onclick="forgotPassword(event)">Forgot Password?</a>
+        </div>
+
+        <button class="submit-btn" id="loginBtn" onclick="handleLogin()">
+          <span class="btn-text">Login</span>
+          <span class="btn-spinner"></span>
+        </button>
+
+      </div><!-- /panel-login -->
+
+      <!-- ════ SIGNUP PANEL ════ -->
+      <div class="panel" id="panel-signup">
+
+        <div class="msg-box" id="signupMsg"></div>
+
+        <div class="field">
+          <label for="signupUsername">Full Name</label>
+          <input type="text" id="signupUsername"
+                 placeholder="Enter your full name" autocomplete="name"/>
+        </div>
+
+        <div class="field">
+          <label for="signupEmail">Email Id</label>
+          <input type="email" id="signupEmail"
+                 placeholder="Enter your email" autocomplete="email"/>
+        </div>
+
+        <div class="field">
+          <label for="signupPassword">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="signupPassword" class="has-eye"
+                   placeholder="Min 6 characters" autocomplete="new-password"/>
+            <button type="button" class="eye-btn"
+                    onclick="toggleEye('signupPassword', this)"
+                    aria-label="Show/hide password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C6.48 20 2 12 2 12
+                         a17.6 17.6 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4
+                         c5.52 0 10 8 10 8a17.8 17.8 0 0 1-2.36 3.38M1 1l22 22"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="signupPhone">Phone Number</label>
+          <input type="tel" id="signupPhone"
+                 placeholder="Enter your phone number" autocomplete="tel"/>
+        </div>
+
+        <button class="submit-btn" id="signupBtn" onclick="handleSignup()">
+          <span class="btn-text">Signup</span>
+          <span class="btn-spinner"></span>
+        </button>
+
+      </div><!-- /panel-signup -->
+
+    </div><!-- /form-area -->
+
+    <div class="card-footer" id="cardFooter">
+      Don't have an account? <a onclick="switchTab('signup')">Sign up</a>
+    </div>
+
+  </div><!-- /card -->
+
+  <script src="login.js"></script>
+</body>
+</html>
