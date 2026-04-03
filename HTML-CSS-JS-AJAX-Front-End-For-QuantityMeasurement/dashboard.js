@@ -21,6 +21,10 @@ var UNITS = {
 var curType   = 'Length';
 var curArith  = 'add';
 var curAction = 'compare';  // tracks the active action tab
+
+/* Stores the raw arithmetic result so the unit dropdown can re-convert on change */
+var rawResultValue = null;
+var rawResultUnit  = null;
 var token    = localStorage.getItem('qm_token');
 var userName = localStorage.getItem('qm_username');
 
@@ -179,6 +183,43 @@ function clearOutput() {
   document.getElementById('resultBox').classList.remove('show');
   document.getElementById('errBox').classList.remove('show');
   document.getElementById('resultUnitSel').style.display = 'none';
+  rawResultValue = null;
+  rawResultUnit  = null;
+}
+
+/* Called whenever the result unit dropdown changes — re-converts the raw value */
+async function convertResultUnit(newUnit) {
+  if (rawResultValue === null || rawResultUnit === null) return;
+
+  /* Same unit — just restore the original number, no API call needed */
+  if (newUnit === rawResultUnit) {
+    document.getElementById('resultValue').textContent = roundDisplay(rawResultValue);
+    return;
+  }
+
+  /* Show a brief loading indicator */
+  document.getElementById('resultValue').textContent = '…';
+
+  try {
+    var body = {
+      quantityOne: { value: rawResultValue, unit: rawResultUnit, category: curType },
+      targetUnit:  newUnit
+    };
+    var res  = await apiFetch('/QuantityMeasurementAPI/convert', body);
+    var data = await res.json();
+
+    if (!res.ok) {
+      /* On error, restore previous value */
+      document.getElementById('resultValue').textContent = roundDisplay(rawResultValue);
+      return;
+    }
+
+    var converted = (data.value !== undefined) ? data.value : data.result;
+    document.getElementById('resultValue').textContent = roundDisplay(converted);
+
+  } catch (err) {
+    document.getElementById('resultValue').textContent = roundDisplay(rawResultValue);
+  }
 }
 
 /* Show the result box */
@@ -361,6 +402,10 @@ async function doArithmetic() {
       var resultVal  = (data.value !== undefined) ? data.value : data.result;
       var resultUnit = data.unit || UNITS[curType][0];
 
+      /* Store raw value + base unit for live re-conversion when dropdown changes */
+      rawResultValue = resultVal;
+      rawResultUnit  = resultUnit;
+
       /* Pre-select the correct unit in the result dropdown */
       var rSel = document.getElementById('resultUnitSel');
       for (var i = 0; i < rSel.options.length; i++) {
@@ -393,7 +438,7 @@ function renderHistory() {
     refreshBtn.style.display = 'none';
     document.getElementById('histContent').innerHTML =
       '<div class="hist-lock">' +
-        '<div class="lock-icon">🔒</div>' +
+        '<div class="lock-icon"></div>' +
         '<p>Your operation history is saved to your account.<br>' +
         'Please <strong>login or signup</strong> to view it.</p>' +
         '<button class="hist-lock-btn" onclick="goLogin()">' +
