@@ -1,4 +1,4 @@
-const API = 'http://localhost:5042/api';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:5042/api';
 
 function getToken() {
   return localStorage.getItem('qm_token');
