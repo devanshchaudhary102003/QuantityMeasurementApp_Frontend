@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quantity Measurement — Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css"/>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <div class="nav-icon">📐</div>
+    <span class="nav-title">Quantity Measurement</span>
+  </div>
+  <div class="nav-right" id="navRight">
+    <!-- Filled dynamically by dashboard.js -->
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- ── OPERATIONS CARD ── -->
+  <div class="card">
+
+    <!-- Blue header band -->
+    <div class="card-header-band">
+      <h2>Welcome To Quantity Measurement</h2>
+    </div>
+
+    <!-- CHOOSE TYPE -->
+    <div class="sec-label">Choose Type</div>
+    <div class="type-grid">
+      <button class="type-chip active" onclick="selectType(this,'Length')">
+        <span class="chip-icon">📏</span>
+        <span class="chip-label">Length</span>
+      </button>
+      <button class="type-chip" onclick="selectType(this,'Weight')">
+        <span class="chip-icon">⚖️</span>
+        <span class="chip-label">Weight</span>
+      </button>
+      <button class="type-chip" onclick="selectType(this,'Temperature')">
+        <span class="chip-icon">🌡️</span>
+        <span class="chip-label">Temperature</span>
+      </button>
+      <button class="type-chip" onclick="selectType(this,'Volume')">
+        <span class="chip-icon">🧪</span>
+        <span class="chip-label">Volume</span>
+      </button>
+    </div>
+
+    <!-- CHOOSE ACTION -->
+    <div class="sec-label">Choose Action</div>
+    <div class="action-tabs">
+      <button class="act-tab active" onclick="selectAction(this,'compare')">Comparison</button>
+      <button class="act-tab"        onclick="selectAction(this,'convert')">Conversion</button>
+      <button class="act-tab"        onclick="selectAction(this,'arithmetic')">Arithmetic</button>
+    </div>
+
+    <!-- ── COMPARE PANEL ── -->
+    <div class="op-panel active" id="op-compare">
+      <div class="two-col">
+        <div class="f-group">
+          <span class="f-label">From</span>
+          <input type="number" class="num-inp" id="cmpV1" value="1" step="any"/>
+          <select class="unit-sel" id="cmpU1"></select>
+        </div>
+        <div class="mid-badge">=?</div>
+        <div class="f-group">
+          <span class="f-label">To</span>
+          <input type="number" class="num-inp" id="cmpV2" value="1000" step="any"/>
+          <select class="unit-sel" id="cmpU2"></select>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="doCompare()">Compare</button>
+    </div>
+
+    <!-- ── CONVERT PANEL ── -->
+    <div class="op-panel" id="op-convert">
+      <div class="two-col">
+        <div class="f-group">
+          <span class="f-label">Value &amp; Unit</span>
+          <input type="number" class="num-inp" id="convV" value="1" step="any"/>
+          <select class="unit-sel" id="convU"></select>
+        </div>
+        <div class="mid-badge">→</div>
+        <div class="f-group">
+          <span class="f-label">Target Unit</span>
+          <div class="spacer-46"></div>
+          <select class="unit-sel" id="convT"></select>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="doConvert()">Convert</button>
+    </div>
+
+    <!-- ── ARITHMETIC PANEL ── -->
+    <div class="op-panel" id="op-arithmetic">
+      <div class="arith-sub-tabs">
+        <button class="arith-sub-tab active" onclick="selectArith(this,'add')">+ Add</button>
+        <button class="arith-sub-tab"        onclick="selectArith(this,'subtract')">− Subtract</button>
+        <button class="arith-sub-tab"        onclick="selectArith(this,'divide')">÷ Divide</button>
+      </div>
+      <div class="two-col">
+        <div class="f-group">
+          <span class="f-label">Value 1</span>
+          <input type="number" class="num-inp" id="arV1" value="1" step="any"/>
+          <select class="unit-sel" id="arU1"></select>
+        </div>
+        <div class="mid-badge" id="arith-op-badge">+</div>
+        <div class="f-group" id="arV2Wrap">
+          <span class="f-label">Value 2</span>
+          <input type="number" class="num-inp" id="arV2" value="1" step="any"/>
+          <select class="unit-sel" id="arU2"></select>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="doArithmetic()">Calculate</button>
+    </div>
+
+    <!-- ── RESULT BOX ── -->
+    <div class="result-box" id="resultBox">
+      <div class="result-label">Result</div>
+      <div class="result-unit-row">
+        <div class="result-value" id="resultValue">—</div>
+        <select class="result-unit-sel" id="resultUnitSel" style="display:none" onchange="convertResultUnit(this.value)"></select>
+      </div>
+      <div class="result-meta" id="resultMeta"></div>
+    </div>
+
+    <!-- ── ERROR BOX ── -->
+    <div class="err-box" id="errBox"></div>
+
+  </div><!-- /card ops -->
+
+  <!-- ── HISTORY CARD ── -->
+  <div class="card">
+    <div class="hist-hdr">
+      <h3>📋 Operation History</h3>
+      <button class="refresh-btn" id="refreshBtn"
+              onclick="loadHistory()" style="display:none">↻ Refresh</button>
+    </div>
+    <div id="histContent">
+      <!-- Filled dynamically by dashboard.js -->
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script src="dashboard.js"></script>
+</body>
+</html>
